@@ -2076,14 +2076,6 @@ int create_pkt_cmd_session_set_property(
 		pkt->size += sizeof(u32) + sizeof(struct hfi_enable);
 		break;
 	}
-	case HAL_PARAM_VENC_CONSTRAINED_INTRA_PRED:
-	{
-		create_pkt_enable(pkt->rg_property_data,
-			HFI_PROPERTY_PARAM_VENC_CONSTRAINED_INTRA_PRED,
-			((struct hal_enable *)pdata)->enable);
-		pkt->size += sizeof(u32) + sizeof(struct hfi_enable);
-		break;
-	}
 	/* FOLLOWING PROPERTIES ARE NOT IMPLEMENTED IN CORE YET */
 	case HAL_CONFIG_BUFFER_REQUIREMENTS:
 	case HAL_CONFIG_PRIORITY:
@@ -2291,37 +2283,6 @@ static int create_3x_pkt_cmd_session_set_property(
 			HFI_PROPERTY_PARAM_VENC_H264_PICORDER_CNT_TYPE;
 		pkt->rg_property_data[1] = *(u32 *)pdata;
 		pkt->size += sizeof(u32) * 2;
-		break;
-	}
-	case HAL_PARAM_VENC_LOW_LATENCY:
-	{
-		struct hfi_enable *hfi;
-
-		pkt->rg_property_data[0] =
-			HFI_PROPERTY_PARAM_VENC_LOW_LATENCY_MODE;
-		hfi = (struct hfi_enable *) &pkt->rg_property_data[1];
-		hfi->enable = ((struct hal_enable *) pdata)->enable;
-		pkt->size += sizeof(u32) * 2;
-		break;
-	}
-	case HAL_CONFIG_VENC_BLUR_RESOLUTION:
-	{
-		struct hfi_frame_size *hfi;
-		struct hal_frame_size *prop = (struct hal_frame_size *) pdata;
-		u32 buffer_type;
-
-		pkt->rg_property_data[0] =
-			HFI_PROPERTY_CONFIG_VENC_BLUR_FRAME_SIZE;
-		hfi = (struct hfi_frame_size *) &pkt->rg_property_data[1];
-		buffer_type = get_hfi_buffer(prop->buffer_type);
-		if (buffer_type)
-			hfi->buffer_type = buffer_type;
-		else
-			return -EINVAL;
-
-		hfi->height = prop->height;
-		hfi->width = prop->width;
-		pkt->size += sizeof(u32) + sizeof(struct hfi_frame_size);
 		break;
 	}
 	default:

@@ -231,9 +231,6 @@ enum hal_property {
 	HAL_CONFIG_VDEC_ENTROPY,
 	HAL_PARAM_VENC_BITRATE_TYPE,
 	HAL_PARAM_VENC_H264_PIC_ORDER_CNT,
-	HAL_PARAM_VENC_LOW_LATENCY,
-	HAL_PARAM_VENC_CONSTRAINED_INTRA_PRED,
-	HAL_CONFIG_VENC_BLUR_RESOLUTION,
 };
 
 enum hal_domain {
@@ -1339,7 +1336,6 @@ struct msm_vidc_cb_event {
 	u32 hal_event_type;
 	ion_phys_addr_t packet_buffer;
 	ion_phys_addr_t extra_data_buffer;
-	u32 pic_struct;
 };
 
 struct msm_vidc_cb_data_done {
